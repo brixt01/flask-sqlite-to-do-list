@@ -1,0 +1,57 @@
+{% extends "base.html" %}
+
+{% block head %}
+<title>To do list</title>
+{% endblock %}
+
+
+{% block body %}
+<div class="content">
+    <h1 class="centered">To do list</h1>
+    {% if tasks|length < 1 %}
+
+    <p class="centered">There are no items in the list</p>
+
+    {% else %}
+
+        <table class="centered">
+            <tr>
+                <th>Task</th>
+                <th>Date added</th>
+                <th>Complete</th>
+                <th>Tools</th>
+            </tr>
+
+            {% for task in tasks %}
+                <tr>
+                    <td>{{ task.content }}</td>
+                    <td>{{ task.date_created.date() }}</td>
+                    {% if task.completed|int == 1 %}
+                        <td>✓</td>
+                    {% else %}
+                        <td>x</td>
+                    {% endif %}
+                    <td>
+                        {% if task.completed|int == 1 %}
+                            <a href="/complete/{{ task.id }}">Uncomplete</a>
+                        {% else %}
+                            <a href="/complete/{{ task.id }}">Complete</a>
+                        {% endif %}
+                        <br>
+                        <a href="/delete/{{ task.id }}">Delete</a>
+                        <br>
+                        <a href="/update/{{ task.id }}">Update</a>
+                    </td>
+                </tr>
+            {% endfor %}
+        </table>
+
+    {% endif %}
+
+    <form class="centered" action="/" method="POST">
+        <input type="text" name="content" id="content" style="display: inline-block">
+        <br>
+        <input type="submit" value="Add Task" style="display: inline-block">
+    </form>
+</div>
+{% endblock %}
